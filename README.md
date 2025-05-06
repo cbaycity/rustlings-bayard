@@ -1,0 +1,1 @@
+This repository contains exercises for people learning Rust for the first time. I'm learning Rust so that I can build applications with Tauri. 
