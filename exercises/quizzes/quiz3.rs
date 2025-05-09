@@ -12,18 +12,35 @@
 // block to support alphabetical report cards in addition to numerical ones.
 
 // TODO: Adjust the struct as described above.
-struct ReportCard {
-    grade: f32,
+struct ReportCard<T: GradeDisplay> {
+    grade: T,
     student_name: String,
     student_age: u8,
 }
 
+trait GradeDisplay{
+    fn to_grade_display(&self) -> String;
+}
+
+impl GradeDisplay for f32 {
+    fn to_grade_display(&self) -> String{
+        self.to_string()
+    }
+}
+
+impl GradeDisplay for &str{
+    fn to_grade_display(&self) -> String{
+        self.to_string()
+    }
+}
+
 // TODO: Adjust the impl block as described above.
-impl ReportCard {
+impl<T: GradeDisplay> ReportCard<T> {
+
     fn print(&self) -> String {
         format!(
             "{} ({}) - achieved a grade of {}",
-            &self.student_name, &self.student_age, &self.grade,
+            &self.student_name, &self.student_age, self.grade.to_grade_display(),
         )
     }
 }
