@@ -10,6 +10,10 @@ fn factorial(num: u64) -> u64 {
     // - additional variables
     // For an extra challenge, don't use:
     // - recursion
+    if num == 0{
+        return 1
+    }
+    (1..num+1).collect::<Vec<u64>>().into_iter().reduce(|x, y| x * y).expect("Not possible to factorial.") as u64
 }
 
 fn main() {
