@@ -28,14 +28,38 @@ enum IntoColorError {
 impl TryFrom<(i16, i16, i16)> for Color {
     type Error = IntoColorError;
 
-    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {}
+    fn try_from(tuple: (i16, i16, i16)) -> Result<Self, Self::Error> {
+        let mut my_colors = Vec::new();
+        for &x in &[tuple.0, tuple.1, tuple.2] {
+            match u8::try_from(x) {
+                Ok(value) => my_colors.push(value),
+                Err(_) => return Err(IntoColorError::IntConversion),
+            }
+        }
+        if my_colors.len() != 3{
+            return Err(IntoColorError::IntConversion)
+        }
+        Ok(Color { red: my_colors[0], green: my_colors[1], blue: my_colors[2]})
+    }
 }
 
 // TODO: Array implementation.
 impl TryFrom<[i16; 3]> for Color {
     type Error = IntoColorError;
 
-    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {}
+    fn try_from(arr: [i16; 3]) -> Result<Self, Self::Error> {
+        let mut my_colors = Vec::new();
+        for x in arr {
+            match u8::try_from(x) {
+                Ok(value) => {my_colors.push(value)},
+                Err(_) => return Err(IntoColorError::IntConversion),
+            }
+        }
+        if my_colors.len() != 3{
+            return Err(IntoColorError::IntConversion)
+        }
+        Ok(Color { red: my_colors[0], green: my_colors[1], blue: my_colors[2]})
+    }
 }
 
 // TODO: Slice implementation.
@@ -43,7 +67,19 @@ impl TryFrom<[i16; 3]> for Color {
 impl TryFrom<&[i16]> for Color {
     type Error = IntoColorError;
 
-    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {}
+    fn try_from(slice: &[i16]) -> Result<Self, Self::Error> {
+        let mut my_colors = Vec::new();
+        for &x in slice {
+            match u8::try_from(x) {
+                Ok(value) => {my_colors.push(value)},
+                Err(_) => return Err(IntoColorError::IntConversion),
+            }
+        }
+        if my_colors.len() != 3{
+            return Err(IntoColorError::BadLen)
+        }
+        Ok(Color { red: my_colors[0], green: my_colors[1], blue: my_colors[2]})
+    }
 }
 
 fn main() {
